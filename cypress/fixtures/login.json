@@ -2,6 +2,12 @@
     "admin": {
       "email": "swaglabs1@yopmail.com",
       "password": "Testing134*"
+    },
+
+    "user_no_shipping": {
+        "email": "user_no_shipping@yopmail.com",
+        "password": "NoShipping123*"
     }
-  }
+
+}
   

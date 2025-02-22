@@ -23,15 +23,31 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-
-Cypress.Commands.add('login', (username,password) => {
+/*
+Cypress.Commands.add('login', (mail,password) => {
+   
   cy.visit("https://magento.softwaretestingboard.com/customer/account/login/");
   
-  cy.get("#email").type(username);
+  cy.get("#email").type(mail);
   cy.get("#pass").type(password);
   cy.get('button.action.login.primary').click();
   
   cy.url().should('eq','https://magento.softwaretestingboard.com/customer/account/')
+});*/
+Cypress.Commands.add("login", (userType) => {
+  cy.fixture("login.json").then((loginJson) => {
+      let user = loginJson[userType]; // Obtiene el usuario según el tipo
+      if (!user) {
+          throw new Error(`El usuario '${userType}' no está definido en login.json`);
+      }
+
+      cy.visit("https://magento.softwaretestingboard.com/customer/account/login/");
+      cy.get("#email").type(user.email);
+      cy.get("#pass").type(user.password);
+      cy.get("#send2").click();
+
+      cy.url().should('eq','https://magento.softwaretestingboard.com/customer/account/')
+  });
 });
 
 
