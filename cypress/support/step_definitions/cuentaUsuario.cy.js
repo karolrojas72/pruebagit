@@ -14,20 +14,18 @@ Then("se redirige al usuario al formulario \"Edit Address\"", () => {
 });
 
 // Escenario: Cambio del campo Phone Number
-Given("que el usuario ha seleccionado la opción \"Address Book\" y hace clic en el enlace \"Change Billing Address\"" , () => {
-  cy.get("a:contains('Change Billing Address')").click();
-  cy.visit("/customer/address/edit/id/1/"); // /customer/address/edit/id/1/
-  
-  //a/span[contains(text(),'Change Billing Address')]
+Then("se redirige al usuario al formulario \"Edit Address\" y se muestra el campo \"Phone Number\"", () => {
+  cy.contains("h1, h2, h3", "Edit Address", { timeout: 10000 }).should("be.visible"); 
+  cy.get("input[name='telephone']", { timeout: 10000 }).should("be.visible"); 
 });
 
-When('el usuario ingresa un nuevo valor en el campo {string} y hace clic en {string}', (phoneNumber) => {
-  cy.get("input[name='telephone']").clear().type(phoneNumber);
-  cy.get("button:contains('Save Address')").click();
+When("el usuario ingresa un nuevo valor en el campo \"Phone Number\" y hace clic en \"Save Address\"", () => {
+  cy.get("input[name='telephone']").clear().type("79879"); 
+  cy.contains("button", "Save Address").click();
 });
 
-Then("se muestra el mensaje de confirmación \"You saved the address.\"", () => {
-  cy.contains("You saved the address.").should("be.visible");
+Then("se muestra el mensaje de confirmación {string}", (mensaje) => {
+  cy.contains(mensaje, { timeout: 10000 }).should("be.visible"); 
 });
 
 // Escenario: Adicionar una nueva dirección
@@ -66,13 +64,17 @@ Then("se redirige el usuario a la página de compartir lista de deseos", () => {
 });
 
 // Escenario: Validar que la lista de productos favoritos se comparte con éxito
-When("el usuario hace clic en el botón \"Share Wish List\" y diligencia el campo \"Email Address\" y hace clic en \"Share Wish List\"", () => {
-  cy.get("input[name='emails']").type("test@example.com");
-  cy.get("button:contains('Share Wish List')").click();
+Then("el usuario ingresa un valor en el campo \"Email Address\" y hace clic en \"Share Wish List\"", () => {
+  cy.get("textarea#email_address", { timeout: 10000 }) 
+    .should("be.visible") 
+    .clear() 
+    .type("test@example.com", { delay: 100 }); 
+  cy.contains("button", "Share Wish List").click(); 
 });
 
-Then("se muestra el mensaje de confirmación \"Your wish list has been shared.\"", () => {
-  cy.contains("Your wish list has been shared.").should("be.visible");
+Then("se muestra el mensaje de lista compartida \"Your wish list has been shared.\"", () => {
+  cy.contains("Your wish list has been shared.", { timeout: 10000 }) 
+    .should("be.visible"); 
 });
 
 // Escenario: Cambiar la contraseña
